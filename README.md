@@ -6,8 +6,6 @@
 <h3 align="center"><i>Engineering Competency Questions from Structured Data and User Stories</i></h3>
 
 
-# CQ-Genesis
-
 CQ-Genesis is a multi-source LLM-based system for eliciting Competency Questions from structured data, user stories, or their combination.
 
 ## Features
