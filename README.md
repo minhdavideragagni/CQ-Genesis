@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./frontend/cq-genesis-logo.png" alt="CQ-Genesis Logo" width="500"/>
+  <img src="./frontend/assets/cq-genesis-logo.png" alt="CQ-Genesis Logo" width="500"/>
 </p>
 
 <h1 align="center">CQ-Genesis</h1>
