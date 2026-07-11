@@ -214,11 +214,11 @@ A Competency Question is a natural-language question expressing
 an information requirement that an ontology should be able to
 answer.
 
-PROMPTING APPROACH
+PROMPTING STRATEGY
 
-Follow the CQ-Genesis Prompt Schema {PROMPT_SCHEMA_VERSION}.
+Use a pattern-guided few-shot prompting strategy.
 
-The approach combines:
+The strategy combines:
 
 1. explicit task instructions;
 2. reusable Competency Question patterns;
