@@ -69,7 +69,9 @@ class CompetencyQuestion(BaseModel):
 class GenerationMetadata(BaseModel):
     provider: str
     model: str
-    prompt_schema: str
+
+    prompt_version: str
+    prompting_strategy: str
 
     input_mode: InputMode
 
