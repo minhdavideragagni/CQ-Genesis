@@ -12,7 +12,8 @@ from .models import (
     InputMode,
 )
 from .prompting import (
-    PROMPT_SCHEMA_VERSION,
+    PROMPT_VERSION,
+    PROMPTING_STRATEGY,
     build_messages,
 )
 from .validation import (
