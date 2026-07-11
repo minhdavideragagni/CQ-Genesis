@@ -475,10 +475,10 @@ with st.sidebar:
             "https://router.huggingface.co/v1"
         )
     
-            model = st.text_input(
-                "Model identifier",
-                placeholder="Provider-specific model name",
-            )
+        model = st.text_input(
+            "Model identifier",
+            placeholder="Provider-specific model name",
+        )
 
     st.divider()
 
