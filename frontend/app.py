@@ -790,10 +790,10 @@ with tab_profile:
         metric_1, metric_2, metric_3 = st.columns(3)
 
         metric_1.metric(
-            "Rows",
-            f"{profile['rows']:,}",
-            help=(
-                "Number of observations available in the dataset."
+            "Prompt version",
+            metadata.get(
+                "prompt_version",
+                "",
             ),
         )
 
@@ -811,6 +811,14 @@ with tab_profile:
             help=(
                 "Total number of cells without a recorded value."
             ),
+        )
+
+        st.info(
+            "Prompting strategy: "
+            + metadata.get(
+                "prompting_strategy",
+                "",
+            )
         )
 
         st.subheader("Column profile")
