@@ -439,57 +439,46 @@ with st.sidebar:
         "LLM provider",
         [
             "OpenAI",
-            "OpenAI-compatible provider",
+            "Hugging Face",
         ],
-        help=(
-            "OpenAI uses the official API. "
-            "The compatible-provider option can connect to "
-            "an external endpoint serving an open-weight model."
-        ),
     )
 
     if provider_label == "OpenAI":
         provider = "openai"
-
+    
         api_key = st.text_input(
             "OpenAI API key",
             type="password",
-            help=(
-                "The key is sent only to the local backend "
-                "for the current generation request."
-            ),
         )
-
+    
         model = st.text_input(
             "Model",
             value="gpt-4o-mini",
         )
-
+    
         base_url = ""
-
+    
     else:
-        provider = "compatible"
-
+        provider = "huggingface"
+    
         api_key = st.text_input(
-            "Provider API key",
+            "Hugging Face token",
             type="password",
         )
-
-        base_url = st.text_input(
-            "API base URL",
-            placeholder=(
-                "Example: https://provider.example.com/v1"
-            ),
-            help=(
-                "The endpoint must provide an "
-                "OpenAI-compatible Chat Completions API."
-            ),
-        )
-
+    
         model = st.text_input(
-            "Model identifier",
-            placeholder="Provider-specific model name",
+            "Open-weight model",
+            value="openai/gpt-oss-20b",
         )
+    
+        base_url = (
+            "https://router.huggingface.co/v1"
+        )
+    
+            model = st.text_input(
+                "Model identifier",
+                placeholder="Provider-specific model name",
+            )
 
     st.divider()
 
