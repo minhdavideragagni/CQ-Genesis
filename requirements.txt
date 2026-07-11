@@ -1,4 +1,9 @@
-streamlit
+fastapi
+uvicorn[standard]
+python-multipart
 openai
 pandas
-python-dotenv
+openpyxl
+pydantic
+streamlit
+requests
