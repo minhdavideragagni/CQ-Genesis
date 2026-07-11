@@ -319,18 +319,24 @@ def edited_questions_from_dataframe(
 # Header
 # =============================================================================
 
-if LOGO_PATH.exists():
-    st.image(
-        str(LOGO_PATH),
-        width=650,
-    )
-else:
-    st.title(APP_NAME)
-
-st.markdown(
-    f'<div class="main-subtitle">{APP_SUBTITLE}</div>',
-    unsafe_allow_html=True,
+header_logo, header_text = st.columns(
+    [1, 4],
+    vertical_alignment="center",
 )
+
+with header_logo:
+    if LOGO_PATH.exists():
+        st.image(
+            str(LOGO_PATH),
+            width=180,
+        )
+
+with header_text:
+    st.title("CQ-Genesis")
+    st.caption(
+        "Eliciting Competency Questions from "
+        "Structured Data and User Stories"
+    )
 
 
 feature_1, feature_2, feature_3 = st.columns(
