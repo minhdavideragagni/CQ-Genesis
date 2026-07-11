@@ -252,7 +252,8 @@ def generate_competency_questions(
     metadata = GenerationMetadata(
         provider=settings.provider,
         model=settings.model,
-        prompt_schema=PROMPT_SCHEMA_VERSION,
+        prompt_version=PROMPT_VERSION,
+        prompting_strategy=PROMPTING_STRATEGY,
         input_mode=input_mode,
         temperature=settings.temperature,
         max_output_tokens=(
