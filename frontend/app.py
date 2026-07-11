@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import os
-from pathlib import Path
 from typing import Any
 
 import pandas as pd
@@ -23,9 +22,6 @@ BACKEND_URL = os.getenv(
     "BACKEND_URL",
     "http://localhost:8000",
 ).rstrip("/")
-
-ASSETS_DIR = Path(__file__).parent / "assets"
-LOGO_PATH = ASSETS_DIR / "cq-genesis-logo.png"
 
 
 st.set_page_config(
@@ -319,24 +315,18 @@ def edited_questions_from_dataframe(
 # Header
 # =============================================================================
 
-header_logo, header_text = st.columns(
-    [1, 4],
-    vertical_alignment="center",
+st.title("CQ-Genesis 🌱")
+
+st.caption(
+    "Eliciting Competency Questions from Structured Data and User Stories"
 )
 
-with header_logo:
-    if LOGO_PATH.exists():
-        st.image(
-            str(LOGO_PATH),
-            width=180,
-        )
-
-with header_text:
-    st.title("CQ-Genesis")
-    st.caption(
-        "Eliciting Competency Questions from "
-        "Structured Data and User Stories"
-    )
+st.markdown(
+    """
+Generate ontology requirements from structured datasets,
+user stories, or their combination using Large Language Models.
+"""
+)
 
 
 feature_1, feature_2, feature_3 = st.columns(
