@@ -1392,7 +1392,7 @@ with tab_record:
     st.markdown(
         """
         This section records the configuration that produced the current
-        output. Recording model, provider, prompt version, generation
+        output. Recording model, provider, prompt specification, generation
         parameters, token usage, and validation notes supports:
 
         - reproducibility of experiments;
@@ -1421,7 +1421,7 @@ with tab_record:
         metric_1, metric_2, metric_3, metric_4 = st.columns(4)
 
         metric_1.metric(
-            "Prompt version",
+            "Prompt specification",
             metadata.get(
                 "prompt_version",
                 "",
