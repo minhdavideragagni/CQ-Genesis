@@ -20,7 +20,7 @@ from Structured Data and User Stories</i>
 </a>
 
 <a href="LICENSE">
-<img src="https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge">
+<img src="https://img.shields.io/badge/License-MIT-emeraldgreen?style=for-the-badge">
 </a>
 
 </p>
