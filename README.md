@@ -5,7 +5,8 @@
 <h1 align="center">CQ-Genesis</h1>
 
 <h3 align="center">
-<i>LLM-Assisted and Human-Guided Competency Question Generation from Structured Data and User Stories</i>
+<i>LLM-Assisted and Human-Guided Competency Question Generation<br>
+from Structured Data and User Stories</i>
 </h3>
 
 <p align="center">
@@ -28,17 +29,9 @@
 
 ## Overview
 
-CQ-Genesis is a research prototype that assists knowledge engineers in generating and refining Competency Questions (CQs) from structured datasets, user stories, or their combination.
+CQ-Genesis assists knowledge engineers in generating and refining Competency Questions (CQs) from structured datasets, user stories, or their combination.
 
-Rather than replacing ontology engineers, CQ-Genesis provides configurable AI-assisted support while preserving human control over input formulation, model selection, generation, and review.
-
----
-
-## Design Philosophy
-
-CQ-Genesis follows a **human-guided** design philosophy.
-
-The system is designed to support—not replace—the expertise of knowledge engineers throughout the Competency Question elicitation process. Every stage of the workflow remains configurable and reviewable, allowing users to retain full control over requirement specification, model selection, generation parameters, and the final set of Competency Questions.
+Rather than replacing knowledge engineers, CQ-Genesis provides configurable AI-assisted support while preserving human control over input formulation, model selection, generation, and review.
 
 ---
 
@@ -75,60 +68,27 @@ The system is designed to support—not replace—the expertise of knowledge eng
 
 ---
 
-## Project Structure
+## Repository Organization
 
-```text
-CQ-Genesis
-│
-├── backend/
-│   ├── main.py                 # FastAPI application
-│   └── cq_genesis/             # Core generation engine
-│       ├── generation.py
-│       ├── profiling.py
-│       ├── prompting.py
-│       ├── validation.py
-│       ├── models.py
-│       └── ...
-│
-├── frontend/
-│   ├── app.py                  # Streamlit interface
-│   └── assets/                 # Images and visual resources
-│
-├── requirements.txt
-├── README.md
-└── LICENSE
-```
-
-CQ-Genesis adopts a modular architecture separating the user interface, the REST API, and the core generation engine. This design facilitates maintainability, reproducibility, and future integration with external ontology engineering workflows.
-
----
-
-## System Architecture
-
-```text
-                User
-                  │
-                  ▼
-        Streamlit Frontend
-                  │
-                  ▼
-        CQ-Genesis REST API
-             (FastAPI)
-                  │
-                  ▼
-      Large Language Models
-   (OpenAI / Hugging Face)
-```
+| Path | Description |
+|------|-------------|
+| `backend/` | FastAPI backend exposing the CQ-Genesis REST API and coordinating the generation workflow. |
+| `backend/cq_genesis/` | Core modules implementing dataset profiling, prompting, generation, validation, models, and shared utilities. |
+| `frontend/` | Streamlit-based graphical user interface. |
+| `frontend/assets/` | Images and graphical resources used by the interface and documentation. |
+| `requirements.txt` | Python dependencies required to run CQ-Genesis. |
+| `README.md` | Project documentation and installation guide. |
+| `LICENSE` | Software license. |
 
 ---
 
 ## Online Services
 
 | Service | URL |
-|----------|-----|
-| Web Application | https://cq-genesis.streamlit.app |
-| REST API | https://cq-genesis-api.onrender.com |
-| API Documentation | https://cq-genesis-api.onrender.com/docs |
+|---------|-----|
+| 🌐 Web Application | https://cq-genesis.streamlit.app |
+| ⚙️ REST API | https://cq-genesis-api.onrender.com |
+| 📘 API Documentation | https://cq-genesis-api.onrender.com/docs |
 
 ---
 
