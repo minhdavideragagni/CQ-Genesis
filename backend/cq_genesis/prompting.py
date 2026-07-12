@@ -8,7 +8,7 @@ from .models import GenerationSettings, InputMode
 PROMPT_VERSION = "CGPS v1.1"
 
 PROMPTING_STRATEGY = (
-    "Pattern-guided few-shot prompting"
+    "Structured instruction prompting"
 )
 
 
