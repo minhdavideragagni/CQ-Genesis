@@ -476,7 +476,7 @@ with st.sidebar:
     
         model = st.text_input(
             "Open-weight model",
-            value="openai/gpt-oss-20b",
+            value="Example: meta-llama/Llama-3.3-70B-Instruct",
         )
     
         base_url = (
