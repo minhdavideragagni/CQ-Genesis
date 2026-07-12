@@ -15,22 +15,10 @@ CQ-Genesis supports knowledge engineers in generating and refining Competency Qu
 
 ## Features
 
-- Structured dataset input
-- User story input
+- Structured datasets
+- User stories
 - Multi-source generation
 - Pattern-guided few-shot prompting
-- Support for proprietary and open-weight LLMs
+- Human-guided configuration
 - Human-in-the-loop review
-- Reproducible generation records
-
-## Repository structure
-
-- `frontend/`: Streamlit interface
-- `backend/`: generation and profiling services
-- `tests/`: automated tests
-- `data/examples/`: example inputs
-- `docs/`: documentation and figures
-
-## Status
-
-Prototype under active development.
+- OpenAI + Hugging Face
