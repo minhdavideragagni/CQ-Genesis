@@ -5,7 +5,7 @@ import json
 from .models import GenerationSettings, InputMode
 
 
-PROMPT_VERSION = "1.1"
+PROMPT_VERSION = "CGPS v1.1"
 
 PROMPTING_STRATEGY = (
     "Pattern-guided few-shot prompting"
