@@ -768,36 +768,36 @@ with tab_profile:
                 "The dataset profile is being prepared."
             )
 
+    else:
+        profile = (
+            st.session_state.dataset_profile
+        )
+    
+        st.subheader("Dataset preview")
+    
+        st.caption(
+            "A selection of dataset rows is shown without additional "
+            "interpretation, allowing users to verify that the uploaded "
+            "file has been read correctly."
+        )
+    
+        if profile.get("sample"):
+            st.dataframe(
+                pd.DataFrame(
+                    profile["sample"]
+                ),
+                use_container_width=True,
+                hide_index=True,
+            )
         else:
-            profile = (
-                st.session_state.dataset_profile
+            st.info(
+                "No preview rows are available. Increase the number of "
+                "representative dataset rows in the advanced settings."
             )
-        
-            st.subheader("Dataset preview")
-        
-            st.caption(
-                "A selection of dataset rows is shown without additional "
-                "interpretation, allowing users to verify that the uploaded "
-                "file has been read correctly."
-            )
-        
-            if profile.get("sample"):
-                st.dataframe(
-                    pd.DataFrame(
-                        profile["sample"]
-                    ),
-                    use_container_width=True,
-                    hide_index=True,
-                )
-            else:
-                st.info(
-                    "No preview rows are available. Increase the number of "
-                    "representative dataset rows in the advanced settings."
-                )
-        
-            st.subheader("Dataset summary")
-        
-            metric_1, metric_2, metric_3 = st.columns(3)
+    
+        st.subheader("Dataset summary")
+    
+        metric_1, metric_2, metric_3 = st.columns(3)
 
         metric_1.metric(
             "Rows",
@@ -1369,7 +1369,7 @@ with tab_record:
     st.markdown(
         """
         This section records the configuration that produced the current
-        output. Recording model, provider, prompt schema, generation
+        output. Recording model, provider, prompt version, generation
         parameters, token usage, and validation notes supports:
 
         - reproducibility of experiments;
@@ -1393,14 +1393,6 @@ with tab_record:
         metadata = generation_response.get(
             "metadata",
             {},
-        )
-
-        st.info(
-            "Prompting strategy: "
-            + metadata.get(
-                "prompting_strategy",
-                "Pattern-guided few-shot prompting",
-            )
         )
 
         metric_1, metric_2, metric_3, metric_4 = st.columns(4)
