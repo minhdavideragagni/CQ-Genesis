@@ -464,11 +464,7 @@ with st.sidebar:
         base_url = (
             "https://router.huggingface.co/v1"
         )
-    
-        model = st.text_input(
-            "Model identifier",
-            placeholder="Provider-specific model name",
-        )
+
 
     st.divider()
 
@@ -780,10 +776,10 @@ with tab_profile:
         metric_1, metric_2, metric_3 = st.columns(3)
 
         metric_1.metric(
-            "Prompt version",
-            metadata.get(
-                "prompt_version",
-                "",
+            "Rows",
+            f"{profile['rows']:,}",
+            help=(
+                "Number of observations available in the dataset."
             ),
         )
 
@@ -801,14 +797,6 @@ with tab_profile:
             help=(
                 "Total number of cells without a recorded value."
             ),
-        )
-
-        st.info(
-            "Prompting strategy: "
-            + metadata.get(
-                "prompting_strategy",
-                "",
-            )
         )
 
         st.subheader("Column profile")
@@ -1383,12 +1371,20 @@ with tab_record:
             {},
         )
 
+        st.info(
+            "Prompting strategy: "
+            + metadata.get(
+                "prompting_strategy",
+                "Pattern-guided few-shot prompting",
+            )
+        )
+
         metric_1, metric_2, metric_3, metric_4 = st.columns(4)
 
         metric_1.metric(
-            "Prompt schema",
+            "Prompt version",
             metadata.get(
-                "prompt_schema",
+                "prompt_version",
                 "",
             ),
         )
@@ -1414,6 +1410,14 @@ with tab_record:
             (
                 f"{metadata.get('generation_time_seconds', 0)} s"
             ),
+        )
+
+        st.info(
+            "Prompting strategy: "
+            + metadata.get(
+                "prompting_strategy",
+                "Pattern-guided few-shot prompting",
+            )
         )
 
         st.subheader("Generation configuration")
