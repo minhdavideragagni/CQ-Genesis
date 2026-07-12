@@ -23,8 +23,6 @@ BACKEND_URL = os.getenv(
     "http://localhost:8000",
 ).rstrip("/")
 
-st.write("Backend URL in use:", BACKEND_URL)
-
 st.set_page_config(
     page_title=APP_NAME,
     page_icon="❓",
@@ -105,6 +103,8 @@ def initialise_session_state() -> None:
         "dataset_profile": None,
         "generation_response": None,
         "last_error": None,
+        "dataset_context_text": "",
+        "user_stories_text": "",
     }
 
     for key, value in defaults.items():
@@ -113,6 +113,25 @@ def initialise_session_state() -> None:
 
 
 initialise_session_state()
+
+DATASET_CONTEXT_TEMPLATE = """Domain:
+
+Purpose:
+
+Unit of observation:
+
+Provenance:
+
+Additional notes:
+"""
+
+
+USER_STORY_TEMPLATE = """Persona:
+
+Goal:
+
+Scenario:
+"""
 
 
 # =============================================================================
@@ -261,7 +280,6 @@ def questions_to_dataframe(
                 "include": True,
                 "id": item.get("id", ""),
                 "question": item.get("question", ""),
-                "cluster": item.get("cluster", ""),
                 "pattern": item.get("pattern", ""),
                 "source": item.get("source", ""),
                 "notes": item.get("notes", ""),
@@ -294,9 +312,6 @@ def edited_questions_from_dataframe(
             {
                 "id": f"CQ{len(questions) + 1}",
                 "question": question,
-                "cluster": str(
-                    row.get("cluster", "")
-                ).strip(),
                 "pattern": str(
                     row.get("pattern", "")
                 ).strip(),
@@ -324,8 +339,9 @@ st.caption(
 
 st.markdown(
     """
-Generate ontology requirements from structured datasets,
-user stories, or their combination using Large Language Models.
+Guide knowledge engineers in eliciting Competency Questions from
+structured datasets, user stories, or their combination while
+preserving human control over the generation process.
 """
 )
 
@@ -367,10 +383,11 @@ with feature_3:
     st.markdown(
         """
         <div class="feature-card">
-            <div class="feature-title">Human-in-the-loop review</div>
+            <div class="feature-title">Knowledge Engineer control review</div>
             <div class="feature-text">
-                Generated questions remain candidate requirements that can
-                be inspected, edited, excluded, and exported by the user.
+                Generated questions remain editable candidates. The knowledge
+                engineer can configure, inspect, revise, exclude, and export
+                them according to the goals of the ontology project.
             </div>
         </div>
         """,
@@ -530,7 +547,7 @@ with st.sidebar:
         language = language_choice
 
     with st.expander(
-        "Advanced generation settings"
+        "Knowledge Engineer preferences"
     ):
         temperature = st.slider(
             "Temperature",
@@ -631,25 +648,43 @@ with tab_sources:
                 ),
             )
 
+            dataset_template_col, dataset_clear_col = st.columns(2)
+            
+            with dataset_template_col:
+                if st.button(
+                    "Use suggested dataset template",
+                    use_container_width=True,
+                ):
+                    st.session_state.dataset_context_text = (
+                        DATASET_CONTEXT_TEMPLATE
+                    )
+            
+            with dataset_clear_col:
+                if st.button(
+                    "Clear dataset description",
+                    use_container_width=True,
+                ):
+                    st.session_state.dataset_context_text = ""
+            
             dataset_context = st.text_area(
                 "Dataset context and documentation",
+                key="dataset_context_text",
                 placeholder=(
-                    "Example: This dataset contains yearly observations "
-                    "of reported infectious-disease cases across regions. "
-                    "Each row represents the number of cases of a disease "
-                    "recorded in a territory and year."
+                    "Example: The dataset describes observations of "
+                    "infectious diseases across territories and periods. "
+                    "Each row represents a reported observation."
                 ),
-                height=180,
+                height=220,
                 help=(
-                    "Describe the domain, unit of observation, provenance, "
-                    "and the meaning of fields that may not be clear "
-                    "from their names alone."
+                    "You may use the suggested structure or provide a "
+                    "completely free-form description."
                 ),
             )
-
+            
             st.caption(
-                "The description adds semantic context that may not be "
-                "recoverable from column names and values alone."
+                "The suggested structure is optional. It helps provide "
+                "semantic context but does not constrain how the dataset "
+                "must be described."
             )
 
         else:
@@ -665,24 +700,42 @@ with tab_sources:
             "user_stories_only",
             "multi_source",
         }:
+            story_template_col, story_clear_col = st.columns(2)
+
+            with story_template_col:
+                if st.button(
+                    "Use suggested user-story template",
+                    use_container_width=True,
+                ):
+                    st.session_state.user_stories_text = (
+                        USER_STORY_TEMPLATE
+                    )
+            
+            with story_clear_col:
+                if st.button(
+                    "Clear user stories",
+                    use_container_width=True,
+                ):
+                    st.session_state.user_stories_text = ""
+            
             user_stories = st.text_area(
                 "Enter user stories or requirement statements",
+                key="user_stories_text",
                 placeholder=(
-                    "As a health analyst, I want to compare disease "
-                    "cases across territories and time so that I can "
-                    "identify areas requiring attention."
+                    "Example: A researcher needs to compare observations "
+                    "across locations and periods in order to identify "
+                    "relevant trends."
                 ),
-                height=250,
+                height=220,
                 help=(
-                    "A strict user-story syntax is recommended "
-                    "but not mandatory. Multiple stories can be "
-                    "entered on separate lines."
+                    "You may use Persona, Goal, and Scenario as optional "
+                    "headings, or provide a free-form requirement description."
                 ),
             )
-
+            
             st.caption(
-                "User stories express stakeholder goals and intended "
-                "information needs."
+                "The suggested structure is optional. CQ-Genesis also "
+                "accepts free-form user stories and requirement statements."
             )
 
         else:
@@ -793,12 +846,12 @@ with tab_profile:
         else:
             st.info(
                 "No preview rows are available. Increase the number of "
-                "representative dataset rows in the advanced settings."
+                "representative dataset rows under Knowledge Engineer preferences."
             )
     
         st.subheader("Dataset summary")
     
-        metric_1, metric_2, metric_3 = st.columns(3)
+        metric_1, metric_2 = st.columns(2)
 
         metric_1.metric(
             "Rows",
@@ -1158,16 +1211,6 @@ with tab_results:
         )
 
         metric_2.metric(
-            "Thematic clusters",
-            (
-                questions_dataframe["cluster"]
-                .replace("", pd.NA)
-                .dropna()
-                .nunique()
-            ),
-        )
-
-        metric_3.metric(
             "Input-source labels",
             (
                 questions_dataframe["source"]
@@ -1194,7 +1237,6 @@ with tab_results:
                 "include",
                 "id",
                 "question",
-                "cluster",
                 "pattern",
                 "source",
                 "notes",
@@ -1219,16 +1261,6 @@ with tab_results:
                         "Competency Question",
                         required=True,
                         width="large",
-                    )
-                ),
-                "cluster": (
-                    st.column_config.TextColumn(
-                        "Thematic cluster",
-                        width="medium",
-                        help=(
-                            "A concise grouping proposed by the LLM "
-                            "to organise related information needs."
-                        ),
                     )
                 ),
                 "pattern": (
@@ -1285,11 +1317,6 @@ with tab_results:
                     )
 
                     secondary_details = []
-
-                    if item["cluster"]:
-                        secondary_details.append(
-                            f"Cluster: {item['cluster']}"
-                        )
 
                     if item["source"]:
                         secondary_details.append(
