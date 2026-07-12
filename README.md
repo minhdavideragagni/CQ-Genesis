@@ -64,17 +64,28 @@ Rather than replacing knowledge engineers, CQ-Genesis provides configurable AI-a
 
 ---
 
-## Repository Organization
+## Repository Contents
 
-| Path | Description |
-|------|-------------|
-| `backend/` | FastAPI backend exposing the CQ-Genesis REST API and coordinating the generation workflow. |
-| `backend/cq_genesis/` | Core modules implementing dataset profiling, prompting, generation, validation, models, and shared utilities. |
-| `frontend/` | Streamlit-based graphical user interface. |
-| `frontend/assets/` | Images and graphical resources used by the interface and documentation. |
-| `requirements.txt` | Python dependencies required to run CQ-Genesis. |
-| `README.md` | Project documentation and installation guide. |
-| `LICENSE` | Software license. |
+The repository follows a modular architecture that separates the user interface from the generation engine and the REST API. This organisation facilitates maintainability, reproducibility, and future integration with external ontology engineering workflows.
+
+| File / Folder | Description |
+| :--- | :--- |
+| [**`backend/`**](./backend) | *FastAPI backend exposing the CQ-Genesis REST API.* |
+| ↳ [`main.py`](./backend/main.py) | Entry point of the REST API and request routing. |
+| ↳ [**`cq_genesis/`**](./backend/cq_genesis) | *Core CQ-Genesis generation engine.* |
+| &nbsp;&nbsp; ↳ [`generation.py`](./backend/cq_genesis/generation.py) | Coordinates the end-to-end Competency Question generation workflow. |
+| &nbsp;&nbsp; ↳ [`profiling.py`](./backend/cq_genesis/profiling.py) | Profiles structured datasets and produces textual summaries and representative samples. |
+| &nbsp;&nbsp; ↳ [`prompting.py`](./backend/cq_genesis/prompting.py) | Defines the prompting strategy, prompt specification, CQ patterns, and quality constraints. |
+| &nbsp;&nbsp; ↳ [`providers.py`](./backend/cq_genesis/providers.py) | Interfaces with supported LLM ecosystems (OpenAI and Hugging Face). |
+| &nbsp;&nbsp; ↳ [`validation.py`](./backend/cq_genesis/validation.py) | Validates and post-processes generated Competency Questions. |
+| &nbsp;&nbsp; ↳ [`models.py`](./backend/cq_genesis/models.py) | Shared data models and generation settings. |
+| &nbsp;&nbsp; ↳ [`utils.py`](./backend/cq_genesis/utils.py) | Utility functions shared across the backend. |
+| [**`frontend/`**](./frontend) | *Streamlit-based graphical user interface.* |
+| ↳ [`app.py`](./frontend/app.py) | Main CQ-Genesis web application. |
+| ↳ [`assets/`](./frontend/assets) | Logos, icons, and graphical resources used by the interface and documentation. |
+| [`requirements.txt`](./requirements.txt) | Python dependencies required to run CQ-Genesis. |
+| [`README.md`](./README.md) | Project documentation and installation guide. |
+| [`LICENSE`](./LICENSE) | MIT License. |
 
 ---
 
