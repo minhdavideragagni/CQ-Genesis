@@ -11,7 +11,7 @@
 </h3>
 
 
-CQ-Genesis is a multi-source LLM-based system for eliciting Competency Questions from structured data, user stories, or their combination.
+CQ-Genesis supports knowledge engineers in generating and refining Competency Questions from structured datasets, user stories, or their combination, while preserving human control over input formulation, model configuration, generation, and review.
 
 ## Features
 
