@@ -3,7 +3,12 @@
 </p>
 
 <h1 align="center">CQ-Genesis</h1>
-<h3 align="center"><i>LLM-Assisted and Human-Guided Competency Question Generation from Structured Data and User Stories</i></h3>
+<h3 align="center">
+  <i>
+    LLM-Assisted and Human-Guided<br>
+    Competency Question Generation from Structured Data and User Stories
+  </i>
+</h3>
 
 
 CQ-Genesis is a multi-source LLM-based system for eliciting Competency Questions from structured data, user stories, or their combination.
