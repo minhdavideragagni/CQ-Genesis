@@ -334,7 +334,7 @@ def edited_questions_from_dataframe(
 st.title("CQ-Genesis 🌱")
 
 st.caption(
-    "Eliciting Competency Questions from Structured Data and User Stories"
+    "LLM-Assisted and Human-Guided Competency Question Generation from Structured Data and User Stories"
 )
 
 st.markdown(
