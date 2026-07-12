@@ -248,15 +248,17 @@ their expertise or impose modelling decisions.
 
 PROMPTING STRATEGY
 
-Use a pattern-guided few-shot prompting strategy combining:
+Use a structured instruction prompting strategy.
+
+The strategy combines:
 
 1. explicit task instructions;
-2. positive and negative formulation examples;
-3. optional CQ patterns as linguistic support;
-4. mode-specific interpretation of the input sources.
-
-You may perform internal analysis, but return only the requested
-JSON output. Do not expose private reasoning or chain-of-thought.
+2. internal conceptual guidance;
+3. quality constraints;
+4. positive and negative formulation examples;
+5. optional Competency Question patterns used as
+   linguistic scaffolds rather than mandatory templates;
+6. structured JSON output constraints.
 
 INTERNAL CONCEPTUAL ANALYSIS
 
