@@ -420,9 +420,9 @@ with st.sidebar:
     input_mode_label = st.radio(
         "Input configuration",
         [
-            "Structured dataset",
-            "User stories",
-            "Dataset + user stories",
+            "Structured Dataset",
+            "User Stories",
+            "Structured Dataset + User Stories",
         ],
         index=2,
         help=(
@@ -432,9 +432,9 @@ with st.sidebar:
     )
 
     input_mode_mapping = {
-        "Structured dataset": "dataset_only",
-        "User stories": "user_stories_only",
-        "Dataset + user stories": "multi_source",
+        "Structured Dataset": "dataset_only",
+        "User Stories": "user_stories_only",
+        "Structured Dataset + User Stories": "multi_source",
     }
 
     input_mode = input_mode_mapping[
@@ -547,7 +547,7 @@ with st.sidebar:
         language = language_choice
 
     with st.expander(
-        "Knowledge Engineer preferences"
+        "Knowledge Engineer Preferences"
     ):
         temperature = st.slider(
             "Temperature",
@@ -576,7 +576,7 @@ with st.sidebar:
         )
 
         sample_rows = st.slider(
-            "Representative dataset rows",
+            "Representative Dataset Rows",
             min_value=0,
             max_value=50,
             value=10,
@@ -603,10 +603,10 @@ with st.sidebar:
 ) = st.tabs(
     [
         "1. Sources",
-        "2. Data review",
+        "2. Data Review",
         "3. Generate",
         "4. Results",
-        "5. Generation record",
+        "5. Generation Record",
     ]
 )
 
@@ -621,7 +621,7 @@ user_stories = ""
 # =============================================================================
 
 with tab_sources:
-    st.header("Requirement sources")
+    st.header("Requirement Sources")
 
     source_left, source_right = st.columns(
         2,
@@ -629,7 +629,7 @@ with tab_sources:
     )
 
     with source_left:
-        st.subheader("Structured dataset")
+        st.subheader("Structured Dataset")
 
         if input_mode in {
             "dataset_only",
@@ -694,7 +694,7 @@ with tab_sources:
             )
 
     with source_right:
-        st.subheader("User stories")
+        st.subheader("User Story")
 
         if input_mode in {
             "user_stories_only",
@@ -740,8 +740,8 @@ with tab_sources:
 
         else:
             st.info(
-                "User stories are not required in "
-                "Structured dataset mode."
+                "User Stories are not required in "
+                "Structured Dataset mode."
             )
 
     if input_mode == "multi_source":
@@ -799,7 +799,7 @@ if (
 # =============================================================================
 
 with tab_profile:
-    st.header("Dataset review")
+    st.header("Dataset Review")
 
     if input_mode == "user_stories_only":
         st.info(
@@ -827,7 +827,7 @@ with tab_profile:
             st.session_state.dataset_profile
         )
     
-        st.subheader("Dataset preview")
+        st.subheader("Dataset Preview")
     
         st.caption(
             "A selection of dataset rows is shown without additional "
@@ -877,7 +877,7 @@ with tab_profile:
             ),
         )
 
-        st.subheader("Column profile")
+        st.subheader("Column Profile")
 
         profile_dataframe = pd.DataFrame(
             profile["column_profiles"]
@@ -963,7 +963,7 @@ with tab_profile:
             )
 
         with st.expander(
-            "Textual profile sent to the model"
+            "Textual Profile sent to the model"
         ):
             st.text(
                 profile["textual_profile"]
@@ -1220,7 +1220,7 @@ with tab_results:
             ),
         )
 
-        st.subheader("Review and edit")
+        st.subheader("Review and Edit")
 
         st.caption(
             "The JSON returned by the model is used internally. "
@@ -1392,7 +1392,7 @@ with tab_results:
 # =============================================================================
 
 with tab_record:
-    st.header("Generation record")
+    st.header("Generation Record")
 
     st.markdown(
         """
@@ -1464,7 +1464,7 @@ with tab_record:
             )
         )
 
-        st.subheader("Generation configuration")
+        st.subheader("Generation Configuration")
 
         st.json(
             metadata
@@ -1485,7 +1485,7 @@ with tab_record:
                     )
 
         with st.expander(
-            "Raw model output"
+            "Raw Model Output"
         ):
             st.code(
                 generation_response.get(
@@ -1502,7 +1502,7 @@ with tab_record:
         )
 
         st.download_button(
-            "Download generation record",
+            "Download Generation Record",
             data=record_json,
             file_name="cq-genesis-generation-record.json",
             mime="application/json",
