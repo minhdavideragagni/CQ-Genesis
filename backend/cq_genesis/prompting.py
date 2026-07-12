@@ -5,7 +5,7 @@ import json
 from .models import GenerationSettings, InputMode
 
 
-PROMPT_VERSION = "1.0"
+PROMPT_VERSION = "1.1"
 
 PROMPTING_STRATEGY = (
     "Pattern-guided few-shot prompting"
@@ -58,10 +58,25 @@ CQ_PATTERNS = [
 
 QUALITY_EXAMPLES = [
     {
-        "principle": "Avoid dataset-specific terminology.",
+        "principle": (
+            "Generalise dataset instances into reusable "
+            "domain-level expressions."
+        ),
         "incorrect": (
-            "How many COVID_19_CASES are recorded "
-            "in IT_2021?"
+            "How many cases of tuberculosis were reported in 2018?"
+        ),
+        "correct": (
+            "How many cases of a given disease were reported "
+            "during a given period?"
+        ),
+    },
+    {
+        "principle": (
+            "Do not reproduce dataset-specific field names, "
+            "codes, or identifiers."
+        ),
+        "incorrect": (
+            "How many COVID_19_CASES are recorded in IT_2021?"
         ),
         "correct": (
             "How many cases of a disease were recorded "
@@ -81,8 +96,7 @@ QUALITY_EXAMPLES = [
     },
     {
         "principle": (
-            "Abstract specific instances "
-            "into domain concepts."
+            "Abstract individual entities into domain concepts."
         ),
         "incorrect": (
             "Who is the author of Harry Potter?"
@@ -112,47 +126,60 @@ def input_mode_instruction(
 ) -> str:
     if input_mode == "dataset_only":
         return """
-Use the structured dataset as evidence of the domain and of the
-information represented by the available fields and observations.
+Use the structured dataset as evidence of:
 
-Infer domain-level concepts, relationships, measures, temporal
-dimensions, spatial dimensions, and classifications when supported.
+- the domain being represented;
+- candidate domain concepts;
+- relationships between concepts;
+- attributes and measures;
+- temporal, spatial, and categorical dimensions.
 
-Do not copy raw field names, identifiers, codes, abbreviations,
-or accidental sample values into the final CQs.
+The dataset profile and sample are evidence for conceptual
+elicitation, not content to be copied literally.
+
+Do not include raw field names, codes, identifiers, abbreviations,
+or specific values observed in the sample in the final CQs.
 
 Every generated CQ must use "dataset" as its source.
 """.strip()
 
     if input_mode == "user_stories_only":
         return """
-Use the user stories to identify stakeholder goals and information
-needs.
+Use the user stories to identify stakeholder goals, intended uses,
+and information needs.
 
-Generalise from specific scenarios and examples while preserving
-the original intent. Do not introduce unrelated requirements.
+If the stories use optional headings such as Persona, Goal, or
+Scenario, interpret those headings as structural guidance.
+
+If the stories are written in free form, infer the same information
+without requiring a predefined format.
+
+Generalise from specific scenarios while preserving stakeholder
+intent.
 
 Every generated CQ must use "user_stories" as its source.
 """.strip()
 
     return """
-Use the user stories as evidence of stakeholder goals and the
-structured dataset as evidence of the information currently
-represented by the available data.
+Interpret the two sources as complementary:
 
-Prefer questions supported by both sources.
+- User stories provide stakeholder goals, intended uses, and
+  information needs.
+- Dataset context provides semantic framing.
+- The dataset profile and sample provide structural evidence about
+  the information currently available.
 
-A question may also be grounded mainly in the dataset or mainly
-in the user stories when this is useful and clearly indicated.
+Use "both" when a CQ is supported by the stakeholder need and by
+the structured data.
 
-Use:
-- "both" when both sources support the question;
-- "dataset" when the question is suggested mainly by the data;
-- "user_stories" when the question expresses a stakeholder need
-  that is not clearly represented in the dataset.
+Use "dataset" when the CQ is primarily suggested by the information
+represented in the dataset.
 
-Do not assume that every stakeholder need is already supported by
-the available data.
+Use "user_stories" when the CQ expresses a stakeholder requirement
+that is not clearly supported by the available dataset.
+
+Do not assume that every stakeholder need is already represented
+in the dataset.
 """.strip()
 
 
@@ -165,9 +192,7 @@ def language_instruction(
             "of the provided input."
         )
 
-    return (
-        f"Generate all CQs in {language}."
-    )
+    return f"Generate all CQs in {language}."
 
 
 def number_instruction(
@@ -183,17 +208,21 @@ def number_instruction(
         )
 
     return """
-Identify all distinct information needs that can be meaningfully
-derived from the provided sources.
+Generate as many CQs as are required to cover the distinct,
+meaningful information needs supported by the provided sources.
 
-Generate as many CQs as are needed to cover the supported concepts,
-relationships, attributes, classifications, measures, temporal
-dimensions, spatial dimensions, comparisons, and aggregations.
+Cover relevant concepts, relationships, attributes, measures,
+classifications, temporal and spatial dimensions, comparisons,
+and aggregations when they are supported.
 
-Do not stop after producing only a small representative sample.
+Do not stop after producing only a small representative set.
 
-Stop only when an additional question would be redundant,
-overly generic, or unsupported by the input.
+Do not increase the number by adding paraphrases, unsupported
+questions, excessively generic questions, or questions based only
+on individual sample records.
+
+Stop when any additional CQ would be redundant, unsupported,
+or conceptually insignificant.
 """.strip()
 
 
@@ -214,53 +243,115 @@ A Competency Question is a natural-language question expressing
 an information requirement that an ontology should be able to
 answer.
 
+CQ-Genesis assists the knowledge engineer. It does not replace
+their expertise or impose modelling decisions.
+
 PROMPTING STRATEGY
 
-Use a pattern-guided few-shot prompting strategy.
-
-The strategy combines:
+Use a pattern-guided few-shot prompting strategy combining:
 
 1. explicit task instructions;
-2. reusable Competency Question patterns;
-3. positive and negative formulation examples;
+2. positive and negative formulation examples;
+3. optional CQ patterns as linguistic support;
 4. mode-specific interpretation of the input sources.
 
-You may analyse the input internally, but return only the requested
+You may perform internal analysis, but return only the requested
 JSON output. Do not expose private reasoning or chain-of-thought.
+
+INTERNAL CONCEPTUAL ANALYSIS
+
+Before formulating the CQs, internally identify:
+
+- candidate domain classes;
+- candidate relationships;
+- candidate attributes and measures;
+- temporal and spatial dimensions;
+- stakeholder goals and information needs;
+- terminology that should be used consistently.
+
+Do not output this analysis.
+
+Use it only to formulate abstract and ontology-oriented CQs.
+
+SOURCE INTERPRETATION
+
+{input_mode_instruction(input_mode)}
+
+OPTIONAL INPUT STRUCTURES
+
+Dataset descriptions may optionally contain headings such as:
+
+- Domain
+- Purpose
+- Unit of observation
+- Provenance
+- Additional notes
+
+User stories may optionally contain headings such as:
+
+- Persona
+- Goal
+- Scenario
+
+These structures are recommendations only.
+
+Do not require them, and do not penalise free-form input.
+When headings are absent, infer the relevant information from the
+available description.
 
 QUALITY REQUIREMENTS
 
 - Relevance:
-  Every CQ must be supported by at least one input source.
+  Every CQ must be supported by at least one provided input source.
 
 - Appropriate abstraction:
-  Use domain-level concepts rather than raw field names,
-  identifiers, codes, or accidental sample values.
+  Treat dataset profiles and samples as evidence for discovering
+  domain-level concepts and information needs.
+
+  Do not include raw column names, identifiers, codes, abbreviations,
+  or specific observed values in the final CQs.
+
+  In particular, do not mention specific persons, organisations,
+  diseases, years, age groups, territories, products, or other
+  observed instances unless the user explicitly asks for
+  instance-level questions.
+
+  Generalise observed values into reusable expressions such as
+  "a given disease", "a given period", "a given age group",
+  "a given territory", or another suitable domain-level term.
+
+- Generality test:
+  Before returning a CQ, verify that replacing an observed sample
+  value with another value of the same kind would not invalidate
+  the question.
 
 - Atomicity:
-  Each CQ should express one principal information need.
+  Each CQ must express one principal information need.
 
 - Clarity:
-  Use concise, grammatical, and unambiguous questions.
+  Use concise, grammatical, and unambiguous formulations.
 
 - Terminological consistency:
-  Use the same expression for the same domain concept.
+  Use the same expression for the same domain concept throughout
+  the output.
 
 - Conceptual diversity:
   Avoid duplicates, paraphrases, and superficial variations.
 
 - Source faithfulness:
-  Do not introduce unsupported concepts merely to increase
-  the number of generated questions.
+  Do not introduce concepts that are unsupported by the sources.
+
+- Semantic caution:
+  Do not assume that every dataset field directly represents a
+  meaningful domain concept.
+
+  If a field or value remains ambiguous after considering its
+  documentation and surrounding context, do not generate a CQ
+  from it.
 
 - Conceptual coverage:
-  Cover all meaningful information needs exposed by the input
-  sources, including those that cannot be expressed through the
-  provided CQ patterns.
-
-MODE-SPECIFIC INSTRUCTIONS
-
-{input_mode_instruction(input_mode)}
+  Cover meaningful information needs even when they cannot be
+  expressed through one of the supplied CQ patterns.
 
 LANGUAGE
 
@@ -270,30 +361,44 @@ NUMBER OF QUESTIONS
 
 {number_instruction(settings)}
 
+POSITIVE AND NEGATIVE EXAMPLES
+
+{json.dumps(
+    QUALITY_EXAMPLES,
+    indent=2,
+    ensure_ascii=False,
+)}
+
 COMPETENCY QUESTION PATTERNS
 
-The following patterns are soft linguistic guidance, not an
-exhaustive inventory and not mandatory generation templates.
+The following patterns are optional linguistic scaffolds.
 
-Use a listed pattern only when it adequately expresses the
-intended information need.
+First identify and formulate each supported information need
+independently of the pattern inventory.
 
-Do not distort, simplify, or omit a valid information need merely
-to make it fit one of the listed patterns.
+Only after formulating a CQ, determine whether its syntactic and
+semantic structure genuinely corresponds to one of the listed
+patterns.
 
-When no listed pattern is suitable, generate a well-formed and
-useful Competency Question and set its pattern field to
-"Free-form".
+Assign a listed pattern only when there is a clear match.
 
-A mixed output containing both pattern-matched and free-form CQs
-is valid and expected whenever justified by the input sources.
+Do not rewrite, simplify, distort, or omit a CQ merely to force
+a pattern match.
 
-{json.dumps(CQ_PATTERNS, indent=2, ensure_ascii=False)}
+If the match is partial, approximate, or uncertain, set the
+pattern field to "Free-form".
 
-CLUSTERING
+The number or proportion of pattern-matched CQs is not a quality
+criterion.
 
-Assign each CQ to a concise thematic cluster representing a
-coherent conceptual or functional area.
+A valid output may contain any combination of pattern-matched
+and free-form CQs.
+
+{json.dumps(
+    CQ_PATTERNS,
+    indent=2,
+    ensure_ascii=False,
+)}
 
 OUTPUT FORMAT
 
@@ -306,16 +411,15 @@ Use exactly this top-level structure:
     {{
       "id": "CQ1",
       "question": "A natural-language question ending with ?",
-      "pattern": "Matched CQ pattern or Free-form",
+      "pattern": "A clearly matched CQ pattern or Free-form",
       "source": "dataset | user_stories | both",
-      "cluster": "Short thematic cluster",
-      "notes": "Short grounding note"
+      "notes": "A short justification explaining how the CQ is grounded in the input and, when applicable, why the pattern matches"
     }}
   ]
 }}
 
-Do not return markdown, code fences, explanations, or additional
-top-level fields.
+Do not return markdown, code fences, explanations, clusters,
+CQ categories, or additional top-level fields.
 """.strip()
 
     context_parts: list[str] = [
@@ -330,7 +434,7 @@ top-level fields.
 
     if user_stories.strip():
         context_parts.append(
-            "USER STORIES:\n"
+            "USER STORIES OR REQUIREMENT DESCRIPTION:\n"
             + user_stories.strip()
         )
 
