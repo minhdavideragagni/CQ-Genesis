@@ -339,9 +339,7 @@ st.caption(
 
 st.markdown(
     """
-Guide knowledge engineers in eliciting Competency Questions from
-structured datasets, user stories, or their combination while
-preserving human control over the generation process.
+CQ-Genesis supports knowledge engineers in generating and refining Competency Questions from structured datasets, user stories, or their combination, while keeping humans in control of input formulation, model configuration, generation, and review.
 """
 )
 
