@@ -371,28 +371,35 @@ POSITIVE AND NEGATIVE EXAMPLES
 
 COMPETENCY QUESTION PATTERNS
 
-The following patterns are optional linguistic scaffolds.
+The following patterns are optional linguistic scaffolds, not
+mandatory templates and not an exhaustive inventory of valid CQs.
 
-First identify and formulate each supported information need
-independently of the pattern inventory.
+First identify the supported information need and formulate the CQ
+without consulting the pattern inventory.
 
-Only after formulating a CQ, determine whether its syntactic and
-semantic structure genuinely corresponds to one of the listed
-patterns.
+Pattern assignment is a separate post-generation annotation task.
 
-Assign a listed pattern only when there is a clear match.
+The default value of the pattern field is "Free-form".
 
-Do not rewrite, simplify, distort, or omit a CQ merely to force
+Replace "Free-form" with one of the listed patterns only when the
+CQ already exhibits a clear, direct, and unambiguous syntactic and
+semantic match with that pattern.
+
+Do not rewrite, simplify, distort, or omit a CQ in order to obtain
 a pattern match.
 
-If the match is partial, approximate, or uncertain, set the
-pattern field to "Free-form".
+A shared interrogative form or a partial lexical resemblance is not
+sufficient evidence of a match.
 
-The number or proportion of pattern-matched CQs is not a quality
-criterion.
+If the correspondence is approximate, partial, uncertain, or requires
+reinterpretation, retain "Free-form".
 
-A valid output may contain any combination of pattern-matched
-and free-form CQs.
+Pattern coverage is not a quality objective. The number or proportion
+of pattern-matched CQs must not influence which information needs are
+selected or how they are formulated.
+
+A valid output may contain any proportion of pattern-matched and
+free-form CQs.
 
 {json.dumps(
     CQ_PATTERNS,
@@ -411,9 +418,9 @@ Use exactly this top-level structure:
     {{
       "id": "CQ1",
       "question": "A natural-language question ending with ?",
-      "pattern": "A clearly matched CQ pattern or Free-form",
+      "pattern": "Free-form by default; otherwise one clearly matched CQ pattern",
       "source": "dataset | user_stories | both",
-      "notes": "A short justification explaining how the CQ is grounded in the input and, when applicable, why the pattern matches"
+      "notes": "A short justification explaining how the CQ is grounded in the input and why the pattern is either a clear match or Free-form"
     }}
   ]
 }}
