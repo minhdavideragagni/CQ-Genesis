@@ -175,7 +175,6 @@ def validate_questions(
                 question=question,
                 pattern=pattern or "Free-form",
                 source=source,
-                cluster=cluster or "General",
                 notes=notes or None,
             )
         )
