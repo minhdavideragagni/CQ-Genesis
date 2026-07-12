@@ -367,7 +367,7 @@ with feature_2:
     st.markdown(
         """
         <div class="feature-card">
-            <div class="feature-title">Pattern-guided prompting</div>
+            <div class="feature-title">Structured instruction prompting</div>
             <div class="feature-text">
                 CQ patterns and formulation examples guide the model toward
                 abstract, atomic, consistent, and non-redundant questions.
@@ -1006,13 +1006,10 @@ with tab_generate:
             """
             <div class="feature-card">
                 <div class="feature-title">
-                    Pattern-guided few-shot prompting
+                    Structured instruction prompting
                 </div>
                 <div class="feature-text">
-                    The prompt combines explicit instructions,
-                    reusable CQ patterns, and positive and negative
-                    formulation examples. Patterns guide generation
-                    without forcing every question into a rigid template.
+                    The prompt combines explicit task instructions, conceptual guidance, optional CQ patterns, quality constraints, formulation examples, and structured output specifications.
                 </div>
             </div>
             """,
@@ -1455,7 +1452,7 @@ with tab_record:
             "Prompting strategy: "
             + metadata.get(
                 "prompting_strategy",
-                "Pattern-guided few-shot prompting",
+                "Structured instruction prompting",
             )
         )
 
