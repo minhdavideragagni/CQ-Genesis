@@ -381,7 +381,7 @@ with feature_3:
     st.markdown(
         """
         <div class="feature-card">
-            <div class="feature-title">Knowledge Engineer control</div>
+            <div class="feature-title">Knowledge engineer control</div>
             <div class="feature-text">
                 Generated questions remain editable candidates. The knowledge
                 engineer can configure, inspect, revise, exclude, and export
@@ -474,7 +474,12 @@ with st.sidebar:
     
         model = st.text_input(
             "Open-weight model",
-            value="Example: meta-llama/Llama-3.3-70B-Instruct",
+            value="",
+            placeholder="Example: openai/gpt-oss-20b",
+            help=(
+                "Enter a chat-completion model available through "
+                "Hugging Face Inference Providers."
+            ),
         )
     
         base_url = (
@@ -1066,14 +1071,6 @@ with tab_generate:
     if not api_key.strip():
         readiness_errors.append(
             "Enter the provider API key."
-        )
-
-    if (
-        provider == "compatible"
-        and not base_url.strip()
-    ):
-        readiness_errors.append(
-            "Enter the compatible-provider base URL."
         )
 
     if (
