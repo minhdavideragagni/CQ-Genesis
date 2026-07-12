@@ -23,6 +23,7 @@ BACKEND_URL = os.getenv(
     "http://localhost:8000",
 ).rstrip("/")
 
+st.write("Backend URL in use:", BACKEND_URL)
 
 st.set_page_config(
     page_title=APP_NAME,
