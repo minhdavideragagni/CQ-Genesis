@@ -162,13 +162,6 @@ def validate_questions(
             )
         ).strip()
 
-        cluster = str(
-            raw_question.get(
-                "cluster",
-                "General",
-            )
-        ).strip()
-
         notes = str(
             raw_question.get(
                 "notes",
