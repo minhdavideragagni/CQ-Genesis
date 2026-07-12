@@ -12,15 +12,15 @@ from Structured Data and User Stories</i>
 <p align="center">
 
 <a href="https://cq-genesis.streamlit.app">
-<img src="https://img.shields.io/badge/Demo-Online-success?style=for-the-badge">
+<img src="https://img.shields.io/badge/Demo-Online-green?style=for-the-badge">
 </a>
 
 <a href="https://cq-genesis-api.onrender.com/docs">
-<img src="https://img.shields.io/badge/REST_API-Online-blue?style=for-the-badge">
+<img src="https://img.shields.io/badge/REST_API-Online-wood?style=for-the-badge">
 </a>
 
 <a href="LICENSE">
-<img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge">
+<img src="https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge">
 </a>
 
 </p>
