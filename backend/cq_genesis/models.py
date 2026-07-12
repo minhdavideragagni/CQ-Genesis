@@ -62,7 +62,6 @@ class CompetencyQuestion(BaseModel):
         "both",
     ]
 
-    cluster: str | None = None
     notes: str | None = None
 
 
