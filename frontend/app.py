@@ -15,7 +15,7 @@ import streamlit as st
 
 APP_NAME = "CQ-Genesis"
 APP_SUBTITLE = (
-    "CQ-Genesis: LLM-Assisted and Human-Guided Competency Question Generation from Structured Data and User Stories"
+    "LLM-Assisted and Human-Guided Competency Question Generation from Structured Data and User Stories"
 )
 
 BACKEND_URL = os.getenv(
