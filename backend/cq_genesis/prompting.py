@@ -254,8 +254,9 @@ QUALITY REQUIREMENTS
   the number of generated questions.
 
 - Conceptual coverage:
-  Cover the meaningful informational dimensions exposed by
-  the input sources.
+  Cover all meaningful information needs exposed by the input
+  sources, including those that cannot be expressed through the
+  provided CQ patterns.
 
 MODE-SPECIFIC INSTRUCTIONS
 
@@ -271,15 +272,23 @@ NUMBER OF QUESTIONS
 
 COMPETENCY QUESTION PATTERNS
 
-The following patterns are methodological guidance rather than
-mandatory templates. Use them when appropriate, but allow a
-well-formed free-form question when none applies.
+The following patterns are soft linguistic guidance, not an
+exhaustive inventory and not mandatory generation templates.
+
+Use a listed pattern only when it adequately expresses the
+intended information need.
+
+Do not distort, simplify, or omit a valid information need merely
+to make it fit one of the listed patterns.
+
+When no listed pattern is suitable, generate a well-formed and
+useful Competency Question and set its pattern field to
+"Free-form".
+
+A mixed output containing both pattern-matched and free-form CQs
+is valid and expected whenever justified by the input sources.
 
 {json.dumps(CQ_PATTERNS, indent=2, ensure_ascii=False)}
-
-POSITIVE AND NEGATIVE EXAMPLES
-
-{json.dumps(QUALITY_EXAMPLES, indent=2, ensure_ascii=False)}
 
 CLUSTERING
 
