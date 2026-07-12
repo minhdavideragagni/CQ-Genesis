@@ -383,7 +383,7 @@ with feature_3:
     st.markdown(
         """
         <div class="feature-card">
-            <div class="feature-title">Knowledge Engineer control review</div>
+            <div class="feature-title">Knowledge Engineer control</div>
             <div class="feature-text">
                 Generated questions remain editable candidates. The knowledge
                 engineer can configure, inspect, revise, exclude, and export
@@ -851,7 +851,7 @@ with tab_profile:
     
         st.subheader("Dataset summary")
     
-        metric_1, metric_2 = st.columns(2)
+        metric_1, metric_2, metric_3 = st.columns(3)
 
         metric_1.metric(
             "Rows",
@@ -1203,7 +1203,7 @@ with tab_results:
             )
         )
 
-        metric_1, metric_2, metric_3 = st.columns(3)
+        metric_1, metric_2 = st.columns(2)
 
         metric_1.metric(
             "Generated CQs",
