@@ -151,7 +151,11 @@ def backend_health() -> tuple[bool, str]:
         return False, f"Backend error: HTTP {response.status_code}"
 
     except requests.RequestException:
-        return False, "Backend unavailable"
+        return (
+            False,
+            "CQ-Genesis services are starting. "
+            "Please wait up to one minute and reload the page.",
+        )
 
 
 def response_error_message(response: requests.Response) -> str:
@@ -408,9 +412,9 @@ with st.sidebar:
             icon="✅",
         )
     else:
-        st.error(
+        st.warning(
             backend_message,
-            icon="⚠️",
+            icon="⏳",
         )
 
     st.divider()
