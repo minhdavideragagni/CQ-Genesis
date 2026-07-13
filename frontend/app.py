@@ -449,6 +449,7 @@ with st.sidebar:
         "LLM provider",
         [
             "OpenAI",
+            "Anthropic Claude",
             "Google Gemini",
             "Hugging Face",
         ],
@@ -465,6 +466,27 @@ with st.sidebar:
         model = st.text_input(
             "Model",
             value="gpt-4o-mini",
+        )
+    
+        base_url = ""
+
+    elif provider_label == "Anthropic Claude":
+        provider = "anthropic"
+    
+        api_key = st.text_input(
+            "Anthropic API key",
+            type="password",
+        )
+    
+        model = st.text_input(
+            "Model",
+            value="claude-haiku-4-5",
+            help=(
+                "Claude Haiku is suggested as a fast and "
+                "cost-conscious default. The knowledge engineer "
+                "can enter another model available to their "
+                "Anthropic account."
+            ),
         )
     
         base_url = ""
