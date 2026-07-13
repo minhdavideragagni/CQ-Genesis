@@ -145,7 +145,7 @@ def call_gemini(
         [],
     )
 
-def call_openai_compatible((
+def call_openai_compatible(
     *,
     client: Any,
     provider: str,
