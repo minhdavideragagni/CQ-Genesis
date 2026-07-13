@@ -25,9 +25,9 @@ from Structured Data and User Stories</i>
 
 ## Overview
 
-CQ-Genesis assists knowledge engineers in generating and refining Competency Questions (CQs) from structured datasets, user stories, or their combination.
+CQ-Genesis assists knowledge engineers in generating, reviewing and refining Competency Questions (CQs) from structured datasets, user stories, or their combination.
 
-Rather than replacing knowledge engineers, CQ-Genesis provides configurable AI-assisted support while preserving human control over input formulation, model selection, generation, and review.
+CQ-Genesis is designed to support, rather than replace, the expertise of knowledge engineers by making the Competency Question generation process transparent, configurable, and reproducible.
 
 ---
 
@@ -38,9 +38,9 @@ Rather than replacing knowledge engineers, CQ-Genesis provides configurable AI-a
   - user stories;
   - their combination.
 
-- 🤖 Support for proprietary and open-weight Large Language Models.
+- 🤖 Support for proprietary and open-weight ecosystems.
 
-- ⚙️ Configurable generation workflow:
+- ⚙️ Knowledge engineer-controlled generation workflow:
   - model selection;
   - generation parameters;
   - output language;
@@ -133,6 +133,8 @@ python3 -m streamlit run frontend/app.py
 CQ-Genesis currently supports:
 
 - **OpenAI** (closed-weight models)
+- **Anthropic Claude** (closed-weight models)
+- **Google Gemini** (closed-weight models)
 - **Hugging Face Inference Providers** (open-weight models)
 
-The knowledge engineer provides their own API credentials. No credentials are stored by the system.
+The knowledge engineer provides their own API credentials for the selected ecosystem. CQ-Genesis does not store API credentials or generated data beyond the current session.
