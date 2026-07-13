@@ -1278,7 +1278,7 @@ with tab_results:
                 ),
                 "notes": (
                     st.column_config.TextColumn(
-                        "Grounding note",
+                        "Explanation",
                         width="large",
                     )
                 ),
