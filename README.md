@@ -111,7 +111,7 @@ cd CQ-Genesis
 Install the required dependencies:
 
 ```bash
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 Start the backend:
