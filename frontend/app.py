@@ -1431,14 +1431,22 @@ with tab_record:
 
     st.markdown(
         """
-        This section records the configuration that produced the current
-        output. Recording model, provider, prompt specification, generation
-        parameters, token usage, and validation notes supports:
+        The Generation Record makes explicit the process through which
+        the current Competency Questions were created.
 
-        - reproducibility of experiments;
-        - comparison between proprietary and open-weight models;
-        - auditing of generated requirements;
-        - reconstruction of the setup described in the paper.
+        It documents both the technical configuration and the choices
+        made by the knowledge engineer, including the selected requirement
+        sources, LLM provider and model, generation parameters, output
+        language, requested coverage, and representative dataset sample.
+
+        These choices may reflect the knowledge engineer's experience,
+        intentions, priorities, and interpretation of the knowledge
+        engineering task. Recording them therefore supports:
+
+        - transparency of the CQ creation process;
+        - explicit documentation of the knowledge engineer's decisions;
+        - reproducibility and comparison across generation configurations;
+        - critical review of how human choices influenced the resulting CQs.
         """
     )
 
@@ -1448,8 +1456,9 @@ with tab_record:
 
     if not generation_response:
         st.info(
-            "The generation record will appear after "
-            "the first successful run."
+            "The Generation Record will appear after the first successful "
+            "run and will document the configuration choices that shaped "
+            "the creation of the Competency Questions."
         )
 
     else:
@@ -1499,7 +1508,14 @@ with tab_record:
             )
         )
 
-        st.subheader("Generation Configuration")
+        st.subheader("Knowledge Engineer Configuration")
+
+        st.caption(
+            "This configuration records the explicit choices that shaped "
+            "the generation process. It should be interpreted as part of "
+            "the provenance of the resulting Competency Questions, rather "
+            "than as a purely technical execution log."
+        )
 
         st.json(
             metadata
