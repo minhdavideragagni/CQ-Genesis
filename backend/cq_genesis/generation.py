@@ -3,6 +3,9 @@ from __future__ import annotations
 import time
 from typing import Any
 
+from anthropic import Anthropic
+from google import genai
+from google.genai import types
 from openai import OpenAI
 
 from .models import (
@@ -27,26 +30,42 @@ def create_llm_client(
     provider: str,
     api_key: str,
     base_url: str | None = None,
-) -> OpenAI:
+) -> Any:
     if not api_key.strip():
         raise ValueError(
             "An API key is required."
         )
 
+    clean_key = api_key.strip()
+
     if provider == "openai":
         return OpenAI(
-            api_key=api_key.strip()
+            api_key=clean_key
         )
 
-    if not base_url:
-        raise ValueError(
-            "A base URL is required for an "
-            "OpenAI-compatible provider."
+    if provider == "anthropic":
+        return Anthropic(
+            api_key=clean_key
         )
 
-    return OpenAI(
-        api_key=api_key.strip(),
-        base_url=base_url.rstrip("/"),
+    if provider == "gemini":
+        return genai.Client(
+            api_key=clean_key
+        )
+
+    if provider == "huggingface":
+        if not base_url:
+            raise ValueError(
+                "A base URL is required for Hugging Face."
+            )
+
+        return OpenAI(
+            api_key=clean_key,
+            base_url=base_url.rstrip("/"),
+        )
+
+    raise ValueError(
+        f"Unsupported LLM provider: {provider}"
     )
 
 
