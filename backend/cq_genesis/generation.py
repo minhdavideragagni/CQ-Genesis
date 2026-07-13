@@ -68,10 +68,86 @@ def create_llm_client(
         f"Unsupported LLM provider: {provider}"
     )
 
-
-def call_llm(
+def call_gemini(
     *,
-    client: OpenAI,
+    client: Any,
+    model: str,
+    messages: list[dict[str, str]],
+    temperature: float,
+    max_output_tokens: int,
+) -> tuple[
+    str,
+    dict[str, int | None],
+    list[str],
+]:
+    system_instruction = ""
+    user_contents: list[str] = []
+
+    for message in messages:
+        role = message.get("role", "")
+        content = message.get("content", "")
+
+        if role == "system":
+            system_instruction = content
+        elif role == "user":
+            user_contents.append(content)
+
+    response = client.models.generate_content(
+        model=model,
+        contents="\n\n".join(user_contents),
+        config=types.GenerateContentConfig(
+            system_instruction=system_instruction,
+            temperature=temperature,
+            max_output_tokens=max_output_tokens,
+            response_mime_type="application/json",
+        ),
+    )
+
+    raw_output = (
+        response.text
+        or ""
+    ).strip()
+
+    usage = {
+        "prompt_tokens": None,
+        "completion_tokens": None,
+        "total_tokens": None,
+    }
+
+    usage_metadata = getattr(
+        response,
+        "usage_metadata",
+        None,
+    )
+
+    if usage_metadata is not None:
+        usage = {
+            "prompt_tokens": getattr(
+                usage_metadata,
+                "prompt_token_count",
+                None,
+            ),
+            "completion_tokens": getattr(
+                usage_metadata,
+                "candidates_token_count",
+                None,
+            ),
+            "total_tokens": getattr(
+                usage_metadata,
+                "total_token_count",
+                None,
+            ),
+        }
+
+    return (
+        raw_output,
+        usage,
+        [],
+    )
+
+def call_openai_compatible((
+    *,
+    client: Any,
     provider: str,
     model: str,
     messages: list[dict[str, str]],
@@ -207,6 +283,44 @@ def call_llm(
         f"compatibility retries: {last_error}"
     )
 
+def call_llm(
+    *,
+    client: Any,
+    provider: str,
+    model: str,
+    messages: list[dict[str, str]],
+    temperature: float,
+    max_output_tokens: int,
+) -> tuple[
+    str,
+    dict[str, int | None],
+    list[str],
+]:
+    if provider == "gemini":
+        return call_gemini(
+            client=client,
+            model=model,
+            messages=messages,
+            temperature=temperature,
+            max_output_tokens=max_output_tokens,
+        )
+
+    if provider in {
+        "openai",
+        "huggingface",
+    }:
+        return call_openai_compatible(
+            client=client,
+            provider=provider,
+            model=model,
+            messages=messages,
+            temperature=temperature,
+            max_output_tokens=max_output_tokens,
+        )
+
+    raise ValueError(
+        f"Unsupported LLM provider: {provider}"
+    )
 
 def generate_competency_questions(
     *,
