@@ -145,6 +145,101 @@ def call_gemini(
         [],
     )
 
+def call_anthropic(
+    *,
+    client: Any,
+    model: str,
+    messages: list[dict[str, str]],
+    temperature: float,
+    max_output_tokens: int,
+) -> tuple[
+    str,
+    dict[str, int | None],
+    list[str],
+]:
+    system_instruction = ""
+    anthropic_messages: list[dict[str, str]] = []
+
+    for message in messages:
+        role = message.get("role", "")
+        content = message.get("content", "")
+
+        if role == "system":
+            system_instruction = content
+
+        elif role in {
+            "user",
+            "assistant",
+        }:
+            anthropic_messages.append(
+                {
+                    "role": role,
+                    "content": content,
+                }
+            )
+
+    response = client.messages.create(
+        model=model,
+        system=system_instruction,
+        messages=anthropic_messages,
+        temperature=temperature,
+        max_tokens=max_output_tokens,
+    )
+
+    output_parts: list[str] = []
+
+    for block in response.content:
+        if getattr(
+            block,
+            "type",
+            None,
+        ) == "text":
+            output_parts.append(
+                getattr(
+                    block,
+                    "text",
+                    "",
+                )
+            )
+
+    raw_output = "\n".join(
+        output_parts
+    ).strip()
+
+    usage = {
+        "prompt_tokens": getattr(
+            response.usage,
+            "input_tokens",
+            None,
+        ),
+        "completion_tokens": getattr(
+            response.usage,
+            "output_tokens",
+            None,
+        ),
+        "total_tokens": None,
+    }
+
+    if (
+        usage["prompt_tokens"] is not None
+        and usage["completion_tokens"] is not None
+    ):
+        usage["total_tokens"] = (
+            usage["prompt_tokens"]
+            + usage["completion_tokens"]
+        )
+
+    return (
+        raw_output,
+        usage,
+        [
+            (
+                "Claude was instructed to return JSON through "
+                "the prompt specification."
+            )
+        ],
+    )
+
 def call_openai_compatible(
     *,
     client: Any,
@@ -298,6 +393,15 @@ def call_llm(
 ]:
     if provider == "gemini":
         return call_gemini(
+            client=client,
+            model=model,
+            messages=messages,
+            temperature=temperature,
+            max_output_tokens=max_output_tokens,
+        )
+
+    if provider == "anthropic":
+        return call_anthropic(
             client=client,
             model=model,
             messages=messages,
