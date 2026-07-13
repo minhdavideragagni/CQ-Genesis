@@ -449,6 +449,7 @@ with st.sidebar:
         "LLM provider",
         [
             "OpenAI",
+            "Google Gemini",
             "Hugging Face",
         ],
     )
@@ -468,11 +469,31 @@ with st.sidebar:
     
         base_url = ""
     
+    elif provider_label == "Google Gemini":
+        provider = "gemini"
+    
+        api_key = st.text_input(
+            "Google AI Studio API key",
+            type="password",
+        )
+    
+        model = st.text_input(
+            "Model",
+            value="gemini-2.5-flash",
+            help=(
+                "Gemini 2.5 Flash is used as the default because it "
+                "offers a good balance between quality, latency, and cost. "
+                "The model identifier can be changed by the knowledge engineer."
+            ),
+        )
+    
+        base_url = ""
+    
     else:
         provider = "huggingface"
     
         api_key = st.text_input(
-            "Hugging Face token",
+            "Hugging Face User Access Token",
             type="password",
         )
     
@@ -480,10 +501,6 @@ with st.sidebar:
             "Open-weight model",
             value="",
             placeholder="Example: openai/gpt-oss-20b",
-            help=(
-                "Enter a chat-completion model available through "
-                "Hugging Face Inference Providers."
-            ),
         )
     
         base_url = (
