@@ -479,11 +479,11 @@ with st.sidebar:
     
         model = st.text_input(
             "Model",
-            value="gemini-2.5-flash",
+            value="gemini-3.1-flash-lite",
             help=(
-                "Gemini 2.5 Flash is used as the default because it "
-                "offers a good balance between quality, latency, and cost. "
-                "The model identifier can be changed by the knowledge engineer."
+                "Gemini 3.1 Flash Lite is used as the default Google model. "
+                "The knowledge engineer can enter another compatible "
+                "model identifier."
             ),
         )
     
