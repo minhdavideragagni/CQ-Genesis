@@ -61,24 +61,24 @@ def read_dataset(
         return pd.read_excel(
             io.BytesIO(file_bytes)
         )
-
+    
+    if extension == ".xml":
+        try:
+            return pd.read_xml(
+                io.BytesIO(file_bytes)
+            )
+        except Exception as exc:
+            raise ValueError(
+                "The XML file could not be read as a "
+                "structured tabular dataset. "
+                "CQ-Genesis expects repeated XML elements "
+                "representing records or observations. "
+                f"Original error: {exc}"
+            ) from exc
+    
     payload = json.loads(
         file_bytes.decode("utf-8-sig")
     )
-
-    if extension == ".xml":
-    try:
-        return pd.read_xml(
-            io.BytesIO(file_bytes)
-        )
-    except Exception as exc:
-        raise ValueError(
-            "The XML file could not be read as a "
-            "structured tabular dataset. "
-            "CQ-Genesis expects repeated XML elements "
-            "representing records or observations. "
-            f"Original error: {exc}"
-        ) from exc
 
     if isinstance(payload, list):
         return pd.json_normalize(payload)
