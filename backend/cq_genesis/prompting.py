@@ -126,7 +126,12 @@ def input_mode_instruction(
 ) -> str:
     if input_mode == "dataset_only":
         return """
-Use the structured dataset as evidence of:
+Use the structured dataset as a requirement source providing
+evidence of the information currently represented within the
+domain.
+
+Interpret the dataset through conceptual reverse engineering to
+identify:
 
 - the domain being represented;
 - candidate domain concepts;
@@ -145,8 +150,11 @@ Every generated CQ must use "dataset" as its source.
 
     if input_mode == "user_stories_only":
         return """
-Use the user stories to identify stakeholder goals, intended uses,
-and information needs.
+Use the user stories as natural-language requirement sources.
+
+Interpret them to identify domain requirements, information needs,
+and the Competency Questions that the resulting ontology should be
+able to answer.
 
 If the stories use optional headings such as Persona, Goal, or
 Scenario, interpret those headings as structural guidance.
@@ -161,25 +169,27 @@ Every generated CQ must use "user_stories" as its source.
 """.strip()
 
     return """
-Interpret the two sources as complementary:
+Interpret structured datasets and user stories as complementary
+requirement sources.
 
-- User stories provide stakeholder goals, intended uses, and
-  information needs.
-- Dataset context provides semantic framing.
-- The dataset profile and sample provide structural evidence about
-  the information currently available.
+Structured datasets provide evidence of the information currently
+represented within the domain and support requirement elicitation
+through conceptual reverse engineering.
 
-Use "both" when a CQ is supported by the stakeholder need and by
-the structured data.
+User stories provide natural-language descriptions of domain
+requirements and contextual information that may not yet be
+represented in the available data.
 
-Use "dataset" when the CQ is primarily suggested by the information
-represented in the dataset.
+Use "both" when a Competency Question is supported by both
+requirement sources.
 
-Use "user_stories" when the CQ expresses a stakeholder requirement
-that is not clearly supported by the available dataset.
+Use "dataset" when the requirement is primarily inferred from the
+structured dataset.
 
-Do not assume that every stakeholder need is already represented
-in the dataset.
+Use "user_stories" when the requirement is primarily derived from
+the user stories.
+
+Do not assume complete correspondence between the two sources.
 """.strip()
 
 
@@ -243,8 +253,12 @@ A Competency Question is a natural-language question expressing
 an information requirement that an ontology should be able to
 answer.
 
-CQ-Genesis assists the knowledge engineer. It does not replace
-their expertise or impose modelling decisions.
+CQ-Genesis assists the knowledge engineer throughout the Competency
+Question elicitation process.
+
+It supports, rather than replaces, human expertise and does not
+impose modelling decisions, requirement interpretations, or
+generation strategies.
 
 PROMPTING STRATEGY
 
@@ -295,7 +309,8 @@ User stories may optionally contain headings such as:
 - Goal
 - Scenario
 
-These structures are recommendations only.
+These structures are optional guidance for describing requirement
+sources.
 
 Do not require them, and do not penalise free-form input.
 When headings are absent, infer the relevant information from the
