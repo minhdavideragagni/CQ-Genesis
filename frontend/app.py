@@ -449,8 +449,8 @@ with st.sidebar:
         "LLM provider",
         [
             "OpenAI",
-            "Anthropic Claude",
-            "Google Gemini",
+            "Anthropic",
+            "Google",
             "Hugging Face",
         ],
     )
@@ -470,7 +470,7 @@ with st.sidebar:
     
         base_url = ""
 
-    elif provider_label == "Anthropic Claude":
+    elif provider_label == "Anthropic":
         provider = "anthropic"
     
         api_key = st.text_input(
@@ -491,7 +491,7 @@ with st.sidebar:
     
         base_url = ""
     
-    elif provider_label == "Google Gemini":
+    elif provider_label == "Google":
         provider = "gemini"
     
         api_key = st.text_input(
