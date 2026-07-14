@@ -688,9 +688,10 @@ with tab_sources:
                     "tsv",
                     "xlsx",
                     "json",
+                    "xml",
                 ],
                 help=(
-                    "Supported formats: CSV, TSV, XLSX, and JSON."
+                    "Supported formats: CSV, TSV, XLSX, JSON and XML."
                 ),
             )
 
