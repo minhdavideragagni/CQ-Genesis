@@ -15,6 +15,7 @@ SUPPORTED_EXTENSIONS = {
     ".tsv",
     ".xlsx",
     ".json",
+    ".xml",
 }
 
 
@@ -27,7 +28,7 @@ def read_dataset(
     if extension not in SUPPORTED_EXTENSIONS:
         raise ValueError(
             "Unsupported dataset format. "
-            "Use CSV, TSV, XLSX, or JSON."
+            "Use CSV, TSV, XLSX, JSON, or XML."
         )
 
     if extension == ".csv":
@@ -64,6 +65,20 @@ def read_dataset(
     payload = json.loads(
         file_bytes.decode("utf-8-sig")
     )
+
+    if extension == ".xml":
+    try:
+        return pd.read_xml(
+            io.BytesIO(file_bytes)
+        )
+    except Exception as exc:
+        raise ValueError(
+            "The XML file could not be read as a "
+            "structured tabular dataset. "
+            "CQ-Genesis expects repeated XML elements "
+            "representing records or observations. "
+            f"Original error: {exc}"
+        ) from exc
 
     if isinstance(payload, list):
         return pd.json_normalize(payload)
