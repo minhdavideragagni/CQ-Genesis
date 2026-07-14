@@ -76,7 +76,7 @@ The repository follows a modular architecture that separates the user interface 
 | &nbsp;&nbsp; ↳ [`generation.py`](./backend/cq_genesis/generation.py) | Coordinates the end-to-end Competency Question generation workflow. |
 | &nbsp;&nbsp; ↳ [`profiling.py`](./backend/cq_genesis/profiling.py) | Profiles structured datasets and produces textual summaries and representative samples. |
 | &nbsp;&nbsp; ↳ [`prompting.py`](./backend/cq_genesis/prompting.py) | Defines the prompting strategy, prompt specification, CQ patterns, and quality constraints. |
-| &nbsp;&nbsp; ↳ [`providers.py`](./backend/cq_genesis/providers.py) | Interfaces with supported LLM ecosystems (OpenAI, Anthropic Claude, Google Gemini, Hugging Face). |
+| &nbsp;&nbsp; ↳ [`providers.py`](./backend/cq_genesis/providers.py) | Interfaces with supported LLM ecosystems (OpenAI, Anthropic, Google, Hugging Face). |
 | &nbsp;&nbsp; ↳ [`validation.py`](./backend/cq_genesis/validation.py) | Validates and post-processes generated Competency Questions. |
 | &nbsp;&nbsp; ↳ [`models.py`](./backend/cq_genesis/models.py) | Shared data models and generation settings. |
 | &nbsp;&nbsp; ↳ [`utils.py`](./backend/cq_genesis/utils.py) | Utility functions shared across the backend. |
