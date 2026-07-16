@@ -340,7 +340,6 @@ def build_dataset_profile(
         else:
             sampled = dataframe.sample(
                 n=effective_rows,
-                random_state=42,
             )
 
         sampled = sampled.fillna("")
