@@ -341,7 +341,13 @@ def build_dataset_profile(
             sampled = dataframe.sample(
                 n=effective_rows,
             )
-
+        
+        sampled.insert(
+            0,
+            "__source_row__",
+            sampled.index + 1,
+        )
+        
         sampled = sampled.fillna("")
 
         for column in sampled.columns:
