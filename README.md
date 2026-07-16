@@ -5,7 +5,7 @@
 <h1 align="center">CQ-Genesis</h1>
 
 <h3 align="center">
-<i>LLM-Assisted and Human-Guided Competency Question Generation<br>
+<i>Configurable Competency Question Generation<br>
 from Structured Data and User Stories</i>
 </h3>
 
